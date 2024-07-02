@@ -1,0 +1,66 @@
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Tracker</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Finance Tracker</h1>
+
+    
+    <form method="post" action="{{ url_for('create_entry') }}">
+        <button onclick="location.href='{{ url_for('dashboard', user_id=current_user.get_id()) }}'" type="button">Dashboard</button>
+        <label for="description">Description:</label>
+        <input type="text" name="description" required>
+
+        <label for="amount">Amount:</label>
+        <input type="number" name="amount" step="0.01" required>
+
+        <label for="type">Type:</label>
+        <select name="type" required>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+        </select>
+
+        <label for="tags">Tags (comma-separated):</label>
+        <input type="text" name="tags">
+
+        <label for="note">Note:</label>
+        <input type="text" name="note">
+
+        <label for="source">Source:</label>
+        <input type="text" name="source">
+
+        <button type="submit">Add Entry</button>
+    </form>
+
+    <h2>All Entries</h2>
+    <form method="post" action="{{ url_for('search_entries') }}">
+        <label for="search_query">Search:</label>
+        <input type="text" name="search_query">
+        <label for="entry_type"></label>
+        <select name="entry_type" required>
+            <option value="lt"><</option>
+            <option value="gt">></option>
+        </select>
+        <button type="submit">Search</button>
+    </form>
+
+    <ul>
+        {% for entry in entries %}
+            <li>
+                {{ entry.description }} - {{ entry.amount }} ({{ entry.type }})
+                [<a href="{{ url_for('edit_entry', entry_id=entry['_id']) }}">Edit</a>]
+                [<a href="{{ url_for('view_entry', entry_id=entry['_id']) }}">View</a>]
+                [<a href="{{ url_for('delete_entry', entry_id=entry['_id']) }}">Delete</a>]
+            </li>
+        {% endfor %}
+    </ul>
+
+    <p><a href="{{ url_for('logout') }}">Logout</a></p>
+</body>
+</html>

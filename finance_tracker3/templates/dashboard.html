@@ -1,0 +1,31 @@
+<!-- templates/dashboard.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Tracker - Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Finance Tracker - Dashboard</h1>
+
+    <form>
+        {{ plot_html|safe }}
+
+        <h2>Total Income: ${{ total_income }}</h2>
+        <h2>Total Expenses: ${{ total_expenses }}</h2>
+        <h2>Net Amount: ${{ net_amount }}</h2>
+        {% if net_amount < 0 %}
+            <h3>You are in debt by ${{ -net_amount }}</h3>
+        {% elif net_amount > 0 %}
+            <h3>You have a surplus of ${{ net_amount }}</h3>
+        {% else %}
+            <h3>Your income and expenses are balanced</h3>
+        {% endif %}
+        <button type="button" onclick="history.back()">Back</button>
+    </form>
+    
+</body>
+</html>
